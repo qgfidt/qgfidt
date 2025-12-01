@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情侣NFC互动系统</title>
+    <script src="https://code.bdstatic.com/npm/tailwindcss-cdn@3.4.10/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://code.bdstatic.com/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-pink-50">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 导航栏 -->
+        <nav class="bg-pink-600 text-white p-4 rounded-lg shadow-md mb-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">情侣NFC互动系统</h1>
+                <div class="flex space-x-4">
+                    <button id="nfcBtn" class="bg-pink-700 hover:bg-pink-800 px-4 py-2 rounded-lg">
+                        <i class="fas fa-nfc-signal mr-2"></i>NFC功能
+                    </button>
+                    <button id="contentBtn" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-lg">
+                        <i class="fas fa-heart mr-2"></i>情感内容
+                    </button>
+                    <button id="settingsBtn" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-lg">
+                        <i class="fas fa-cog mr-2"></i>设置
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主内容区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- NFC功能区域 -->
+            <div id="nfcSection" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4 text-pink-700 border-b pb-2">
+                    <i class="fas fa-nfc-signal mr-2"></i>NFC交互功能
+                </h2>
+                <div class="space-y-4">
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">NFC标签识别</h3>
+                        <p class="text-gray-700 mb-3">将NFC标签靠近设备进行识别</p>
+                        <button id="scanNfcBtn" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg w-full">
+                            <i class="fas fa-search mr-2"></i>扫描NFC标签
+                        </button>
+                        <div id="nfcResult" class="mt-3 p-3 bg-gray-100 rounded-lg hidden">
+                            <p class="font-medium">检测到NFC标签:</p>
+                            <p id="nfcId" class="text-sm text-gray-600"></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">NFC功能绑定</h3>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 mb-1">选择功能类型</label>
+                            <select id="actionType" class="w-full p-2 border rounded-lg">
+                                <option value="message">发送消息</option>
+                                <option value="content">展示内容</option>
+                                <option value="reminder">纪念日提醒</option>
+                            </select>
+                        </div>
+                        <div id="messageOptions" class="mb-3">
+                            <label class="block text-gray-700 mb-1">选择消息模板</label>
+                            <select class="w-full p-2 border rounded-lg">
+                                <option>想你了</option>
+                                <option>今天也要开心</option>
+                                <option>我爱你</option>
+                            </select>
+                        </div>
+                        <button id="bindNfcBtn" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg w-full">
+                            <i class="fas fa-link mr-2"></i>绑定到NFC标签
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 情感内容区域 -->
+            <div id="contentSection" class="bg-white p-6 rounded-lg shadow-md hidden">
+                <h2 class="text-xl font-semibold mb-4 text-pink-700 border-b pb-2">
+                    <i class="fas fa-heart mr-2"></i>情感内容管理
+                </h2>
+                <div class="space-y-4">
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">上传新内容</h3>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 mb-1">内容类型</label>
+                            <select id="contentType" class="w-full p-2 border rounded-lg">
+                                <option value="text">文字</option>
+                                <option value="image">图片</option>
+                                <option value="audio">音频</option>
+                                <option value="video">视频</option>
+                            </select>
+                        </div>
+                        <div id="textInput" class="mb-3">
+                            <label class="block text-gray-700 mb-1">内容</label>
+                            <textarea class="w-full p-2 border rounded-lg" rows="3" placeholder="输入你的情感内容..."></textarea>
+                        </div>
+                        <div id="fileInput" class="mb-3 hidden">
+                            <label class="block text-gray-700 mb-1">选择文件</label>
+                            <input type="file" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 mb-1">标签</label>
+                            <input type="text" class="w-full p-2 border rounded-lg" placeholder="例如: 纪念日,约会等">
+                        </div>
+                        <button id="uploadContentBtn" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg w-full">
+                            <i class="fas fa-upload mr-2"></i>上传内容
+                        </button>
+                    </div>
+
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">内容列表</h3>
+                        <div class="flex justify-between mb-3">
+                            <input type="text" placeholder="搜索内容..." class="p-2 border rounded-lg w-3/4">
+                            <button class="bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 rounded-lg">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="contentList" class="space-y-2">
+                            <!-- 内容列表将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置区域 -->
+            <div id="settingsSection" class="bg-white p-6 rounded-lg shadow-md hidden">
+                <h2 class="text-xl font-semibold mb-4 text-pink-700 border-b pb-2">
+                    <i class="fas fa-cog mr-2"></i>系统设置
+                </h2>
+                <div class="space-y-4">
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">纪念日设置</h3>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 mb-1">纪念日名称</label>
+                            <input type="text" class="w-full p-2 border rounded-lg" placeholder="例如: 相识100天">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 mb-1">日期</label>
+                            <input type="date" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <button class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg w-full">
+                            <i class="fas fa-plus mr-2"></i>添加纪念日
+                        </button>
+                    </div>
+
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">数据安全</h3>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 mb-1">加密密钥</label>
+                            <input type="password" class="w-full p-2 border rounded-lg" placeholder="输入加密密钥">
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg flex-1">
+                                <i class="fas fa-lock mr-2"></i>加密数据
+                            </button>
+                            <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg flex-1">
+                                <i class="fas fa-unlock mr-2"></i>解密数据
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-pink-100 p-4 rounded-lg">
+                        <h3 class="font-medium text-pink-800 mb-2">数据备份与恢复</h3>
+                        <div class="flex space-x-2">
+                            <button class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg flex-1">
+                                <i class="fas fa-cloud-upload-alt mr-2"></i>备份到云端
+                            </button>
+                            <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg flex-1">
+                                <i class="fas fa-cloud-download-alt mr-2"></i>从云端恢复
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 互动日志区域 -->
+            <div class="bg-white p-6 rounded-lg shadow-md col-span-1 md:col-span-2">
+                <h2 class="text-xl font-semibold mb-4 text-pink-700 border-b pb-2">
+                    <i class="fas fa-history mr-2"></i>互动日志
+                </h2>
+                <div id="interactionLog" class="space-y-3">
+                    <!-- 日志条目将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="nfcModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 class="text-xl font-semibold mb-4 text-pink-700">NFC扫描中...</h3>
+            <div class="text-center py-8">
+                <i class="fas fa-nfc-signal text-5xl text-pink-600 mb-4"></i>
+                <p class="text-gray-700">请将NFC标签靠近设备背面</p>
+            </div>
+            <button id="cancelNfcScan" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg w-full">
+                取消扫描
+            </button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
